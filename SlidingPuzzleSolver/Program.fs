@@ -2,7 +2,7 @@
 // See the 'F# Tutorial' project for more help.
 
 
-
+open System
 open System.Collections
 
 type Position = int * int
@@ -104,9 +104,9 @@ let rec manhattanDistance (board:Board) =
 *)
 
 let (initialBoard:Board) = 
-    [ (1, (0,0)); (2, (1,0)); (3, (2,0));
-      (4, (0,1)); (5, (1,1)); (6, (2,1));
-      (7, (0,2)); (8, (1,2)); (0, (2,2)) ]
+    [ (1, (0,0)); (0, (1,0)); (3, (2,0));
+      (4, (0,1)); (2, (1,1)); (6, (2,1));
+      (7, (0,2)); (5, (1,2)); (8, (2,2)) ]
 
 let print board =
     let rec helper b i =
@@ -128,21 +128,22 @@ let solve board =
         [ (1, (0,0)); (2, (1,0)); (3, (2,0));
           (4, (0,1)); (5, (1,1)); (6, (2,1));
           (7, (0,2)); (8, (1,2)); (0, (2,2)) ]
-    let rec helper (currentBoard:Board) (previousBoard:Board) (finalBoard:Board) totalMoves heuristic = 
-        let next = nextBoard currentBoard
-        let fList = List.map (fun elem -> (heuristic elem) + totalMoves) next
+    let rec helper (currentBoard:Board) (finalBoard:Board) totalMoves heuristic = 
+        let next = nextBoard currentBoard // Next possible boards
+        let fList = List.map (fun elem -> (heuristic elem) + totalMoves) next // list of f values associated with all boards
         let minf = List.min fList // minimum f
-        let nextNodesPossible = List.collect (fun elem -> )
+        //let nextNodesPossible = List.collect (fun elem -> )
         let q = List.item (List.findIndex (fun elem -> elem = minf) fList) next // next node to check
         print q
         if q = finalBoard then printfn "done"; q
-        elif q = previousBoard then 
-            let nextQ = List.item (List.findIndex (fun elem -> elem = minf) fList) next
+//        elif q = previousBoard then 
+//            let nextQ = List.item (List.findIndex (fun elem -> elem = minf) fList) next
         else helper q finalBoard (totalMoves + 1) heuristic
     helper board finalBoard 0 manhattanDistance
 
 [<EntryPoint>]
 let main argv = 
     let c = solve initialBoard
+    Console.ReadKey()
     0
          
